@@ -1,6 +1,6 @@
 {
   "name": "AFK on Minimize",
-  "description": "Sets your status to AFK/DND if you close discord",
-  "version": "0.0.1",
+  "description": "Sets your status if you minimize discord",
+  "version": "1.0.0",
   "author": "Samm-Cheese#9500"
 }
