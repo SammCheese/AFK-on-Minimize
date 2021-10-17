@@ -21,15 +21,16 @@ const statusOptions = [
   }
 ];
 
-
 const SettingsView = makeLazy({
   promise: () => {
 
     const settings = Astra.settings.get('AFK-on-exit');
-    const { FormSection, FormItem, Markdown, FormDivider } = DNGetter;
+    const { FormSection, FormItem, Markdown, FormDivider, SwitchItem } = DNGetter;
     const { SelectInput } = require('powercord/components/settings');
+    const restoreSetting = settings.get('restoreStatus', true);
+    console.log(restoreSetting);
 
-    const SettingsView = React.memo(({} : { openingStatus : string, closingStatus : string}) : React.ReactElement<typeof FormSection> => (
+    const SettingsView = React.memo(({} : { openingStatus : string, closingStatus : string, restoreStatus : boolean}) : React.ReactElement<typeof FormSection> => (
         <div>
           <FormSection title='AFK on Exit' tag='h1'>
             <FormItem>
@@ -41,6 +42,12 @@ const SettingsView = makeLazy({
           <FormDivider />
           <br/>
           <div>
+            <SwitchItem
+              onChange={React.useCallback((value: boolean): void => settings.set('restoreStatus', value), [])}
+              value={settings.get('restoreStatus', true)}
+            >
+              Restore Status after opening Discord
+            </SwitchItem>
             <SelectInput
               onChange={React.useCallback((value: string): void => settings.set('openingStatus', value), [])}
               options={statusOptions.map(status => ({
@@ -48,9 +55,9 @@ const SettingsView = makeLazy({
                 value: status.id,
               }))}
               value={settings.get('openingStatus', 'online').value}
-              
+              disabled={!!restoreSetting}
             >
-              Status to be set when Opening Discord
+              Status to be set when Opening Discord (Disable Restore Status)
           </SelectInput>
           <SelectInput
               onChange={React.useCallback((value: string): void => settings.set('closingStatus', value), [])}
@@ -75,6 +82,7 @@ export class SettingsErrorBoundary extends ErrorBoundary {
     props.label = 'AFK on Exit Setting Panel';
     super(props);
   }
+
   renderChildren(): React.ReactElement<typeof SettingsView> {
     return <SettingsView />;
   }
