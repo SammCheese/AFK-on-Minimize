@@ -1,12 +1,9 @@
-![image](https://user-images.githubusercontent.com/52699291/137605769-150ab635-359c-402f-8574-7e056b5481d1.png)
-
-
-## AFK on Exit is an Astra Plugin that Allows you to Set a specific status if you Minimize and Maximize Discord!
+## AFK on Exit is a Powercord Plugin that Allows you to Set a specific status if you Minimize and Maximize Discord!
 
 
 ### Installation 
 
-Enter this Command into your Astra Plugin directory (usually `C:/Users/YOURUSERNAME/Astra/plugins/Astra`)
+Enter this Command into your Powercord Plugin directory (usually `C:/Users/YOURUSERNAME/powercord/src/Powercord/plugins`)
 
 ```ps
 git clone https://github.com/SammCheese/AFK-on-exit
