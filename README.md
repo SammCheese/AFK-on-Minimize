@@ -9,7 +9,7 @@
 Enter this Command into your Astra Plugin directory (usually `C:/Users/YOURUSERNAME/Astra/plugins/Astra`)
 
 ```ps
-git clone https://github.com/SammCheese/AFK-on-exit
+git clone https://github.com/SammCheese/AFK-on-exit -b Astra
 ```
 
 ### Functionality
