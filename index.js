@@ -2,8 +2,8 @@ const { Plugin } = require('powercord/entities');
 const { getModule } = require('powercord/webpack');
 
 const status = getModule(['updateRemoteSettings'], false);
-const dStatus = getModule(['getStatus'], false);
 const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
+const statusStore = getModule([ 'isMobileOnline' ], false);
 
 const Settings = require('./components/settings');
 
@@ -40,20 +40,20 @@ module.exports = class AFKonExit extends Plugin {
   }
 
   cumIntoClient() {
-    const restoreStatus = false; // this.settings.get('restoreStatus', true);
+    const restoreStatus = this.settings.get('restoreStatus', true);
 
     if (restoreStatus && document.visibilityState === 'hidden' && check === false) {
-      prevDStatus = dStatus.getStatus(currentUser);
+      prevDStatus = statusStore.getStatus(currentUser);
       console.log('[AFK-on-exit] Restoring previous Status');
     }
     if (document.visibilityState === 'hidden' && prevStatus !== 'hidden') {
       prevStatus = 'hidden';
       check = true;
-      status.updateRemoteSettings({ status: this.settings.get('closingStatus', 'idle').value });
+      status.updateRemoteSettings({ status: this.settings.get('closingStatus', 'idle').value || 'idle' });
     } else if (document.visibilityState === 'visible' && prevStatus === 'hidden') {
       prevStatus = 'visible';
       check = false;
-      status.updateRemoteSettings({ status: `${restoreStatus ? prevDStatus : this.settings.get('openingStatus', 'online').value}` });
+      status.updateRemoteSettings({ status: `${restoreStatus ? prevDStatus : this.settings.get('openingStatus', 'online').value || 'online'}` });
     }
   }
   

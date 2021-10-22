@@ -30,7 +30,6 @@ module.exports = class Settings extends React.PureComponent {
             note='Automatically return to your previous status'
             value={getSetting('restoreStatus', true)}
             onChange={() => toggleSetting('restoreStatus')}
-            disabled={true}
           >
             Restore Status after opening Discord (Disabled)
           </SwitchItem>
@@ -41,7 +40,7 @@ module.exports = class Settings extends React.PureComponent {
               label: status.name,
               value: status.id
             }))}
-            disabled={/*getSetting('restoreStatus', true)*/ false}
+            disabled={getSetting('restoreStatus', true)}
           >
             Status to be set when Opening Discord
           </SelectInput>
