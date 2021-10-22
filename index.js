@@ -2,7 +2,6 @@ const { Plugin } = require('powercord/entities');
 const { getModule } = require('powercord/webpack');
 
 const status = getModule(['updateRemoteSettings'], false);
-const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
 const statusStore = getModule([ 'isMobileOnline' ], false);
 
 const Settings = require('./components/settings');
@@ -30,7 +29,7 @@ module.exports = class AFKonExit extends Plugin {
   startPlugin() {
     this.cumIntoClient = this.cumIntoClient.bind(this);
     this.throttledCum = debounce(this.cumIntoClient, 3000);
-
+    
     document.addEventListener('visibilitychange', this.throttledCum, false);
     powercord.api.settings.registerSettings(this.entityID, {
       label: 'Alternative Block',
@@ -38,10 +37,12 @@ module.exports = class AFKonExit extends Plugin {
       render: Settings
     });
   }
-
+  
   cumIntoClient() {
+    const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
+    console.log(currentUser)
     const restoreStatus = this.settings.get('restoreStatus', true);
-
+    
     if (restoreStatus && document.visibilityState === 'hidden' && check === false) {
       prevDStatus = statusStore.getStatus(currentUser);
       console.log('[AFK-on-exit] Restoring previous Status');
