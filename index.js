@@ -40,22 +40,20 @@ module.exports = class AFKonExit extends Plugin {
   }
 
   cumIntoClient() {
-    const restoreStatus = this.settings.get('restoreStatus', true);
-    console.log('Something has changed');
+    const restoreStatus = false; // this.settings.get('restoreStatus', true);
 
     if (restoreStatus && document.visibilityState === 'hidden' && check === false) {
       prevDStatus = dStatus.getStatus(currentUser);
+      console.log('[AFK-on-exit] Restoring previous Status');
     }
     if (document.visibilityState === 'hidden' && prevStatus !== 'hidden') {
       prevStatus = 'hidden';
       check = true;
       status.updateRemoteSettings({ status: this.settings.get('closingStatus', 'idle').value });
-      console.log('Changing status...');
     } else if (document.visibilityState === 'visible' && prevStatus === 'hidden') {
       prevStatus = 'visible';
       check = false;
       status.updateRemoteSettings({ status: `${restoreStatus ? prevDStatus : this.settings.get('openingStatus', 'online').value}` });
-      console.log('Changing status...');
     }
   }
   
