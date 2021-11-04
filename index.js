@@ -32,7 +32,7 @@ module.exports = class AFKonExit extends Plugin {
     
     document.addEventListener('visibilitychange', this.throttledCum, false);
     powercord.api.settings.registerSettings(this.entityID, {
-      label: 'Alternative Block',
+      label: 'AFK on Exit',
       category: this.entityID,
       render: Settings
     });
