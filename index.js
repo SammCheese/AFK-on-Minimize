@@ -10,25 +10,10 @@ let prevStatus;
 let prevDStatus;
 let check = false;
 
-function debounce(func, wait, immediate) {
-  let timeout;
-  return function() {
-    let context = this, args = arguments;
-    const later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    let callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-}
-
 module.exports = class AFKonExit extends Plugin {
   startPlugin() {
     this.cumIntoClient = this.cumIntoClient.bind(this);
-    this.throttledCum = debounce(this.cumIntoClient, 3000);
+    this.throttledCum = _.debounce(this.cumIntoClient, 3000);
     
     document.addEventListener('visibilitychange', this.throttledCum, false);
     powercord.api.settings.registerSettings(this.entityID, {
@@ -40,7 +25,6 @@ module.exports = class AFKonExit extends Plugin {
   
   cumIntoClient() {
     const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
-    console.log(currentUser)
     const restoreStatus = this.settings.get('restoreStatus', true);
     
     if (restoreStatus && document.visibilityState === 'hidden' && check === false) {
@@ -60,6 +44,6 @@ module.exports = class AFKonExit extends Plugin {
   
   pluginWillUnload() {
     document.removeEventListener('visibilitychange', this.throttledCum, false);
-    powercord.api.settings.unregisterSettings(Settings);
+    powercord.api.settings.unregisterSettings(this.entityID);
   }
-}
+};
