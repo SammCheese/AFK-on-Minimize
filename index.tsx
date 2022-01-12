@@ -5,7 +5,6 @@ import { debounce } from 'lodash';
 
 const status = getModule(['updateRemoteSettings']);
 const statusStore = getModule([ 'isMobileOnline' ], false);
-const currentUser = getModule(['getCurrentUser']).getCurrentUser().id;
 const settings = Astra.settings.get('AFK-on-exit');
 
 let prevStatus;
@@ -31,6 +30,7 @@ export default class dndOnClose extends UPlugin {
 
   cumIntoClient() : void {
     const restoreStatus = settings.get('restoreStatus', true);
+    const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
     
     if (restoreStatus && document.visibilityState === 'hidden' && check === false) {
       prevDStatus = statusStore.getStatus(currentUser);
