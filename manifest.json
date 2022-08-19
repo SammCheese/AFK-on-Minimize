@@ -1,7 +1,7 @@
 {
   "name": "AFK on Minimize",
   "description": "Sets your status if you minimize discord",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Samm-Cheese#9500",
   "license": "MIT"
 }

@@ -1,14 +1,15 @@
 const { Plugin } = require('powercord/entities');
-const { getModule } = require('powercord/webpack');
+const { getModule, FluxDispatcher } = require('powercord/webpack');
 
-const status = getModule(['updateRemoteSettings'], false);
 const statusStore = getModule([ 'isMobileOnline' ], false);
+const userSettings = getModule([ 'PreloadedUserSettingsActionCreators' ], false);
 
 const Settings = require('./components/settings');
 
 let prevStatus;
 let prevDStatus;
 let check = false;
+
 
 module.exports = class AFKonExit extends Plugin {
   startPlugin() {
@@ -22,6 +23,10 @@ module.exports = class AFKonExit extends Plugin {
       render: Settings
     });
   }
+
+  updateStatus(status) {
+    userSettings.PreloadedUserSettingsActionCreators.updateAsync("status", s => s.status.value = status, 0);
+  }
   
   cumIntoClient() {
     const currentUser = getModule(['getCurrentUser'], false).getCurrentUser().id;
@@ -34,16 +39,18 @@ module.exports = class AFKonExit extends Plugin {
     if (document.visibilityState === 'hidden' && prevStatus !== 'hidden') {
       prevStatus = 'hidden';
       check = true;
-      status.updateRemoteSettings({ status: this.settings.get('closingStatus', 'idle').value || 'idle' });
+      this.updateStatus(this.settings.get('closingStatus', {value: 'idle'}).value)
     } else if (document.visibilityState === 'visible' && prevStatus === 'hidden') {
       prevStatus = 'visible';
       check = false;
-      status.updateRemoteSettings({ status: `${restoreStatus ? prevDStatus : this.settings.get('openingStatus', 'online').value || 'online'}` });
+      this.updateStatus(restoreStatus ? prevDStatus : this.settings.get('openingStatus', {value: 'online'}).value);
     }
   }
   
   pluginWillUnload() {
     document.removeEventListener('visibilitychange', this.throttledCum, false);
     powercord.api.settings.unregisterSettings(this.entityID);
+    FluxDispatcher.unsubscribe('USER_SETTINGS_PROTO_UPDATE');
+    FluxDispatcher.unsubscribe('USER_SETTINGS_PROTO_ENQUEUE_UPDATE');
   }
 };
