@@ -1,5 +1,5 @@
 const { Plugin } = require('powercord/entities');
-const { getModule, FluxDispatcher } = require('powercord/webpack');
+const { getModule } = require('powercord/webpack');
 
 const statusStore = getModule([ 'isMobileOnline' ], false);
 const userSettings = getModule([ 'PreloadedUserSettingsActionCreators' ], false);
@@ -50,7 +50,5 @@ module.exports = class AFKonExit extends Plugin {
   pluginWillUnload() {
     document.removeEventListener('visibilitychange', this.throttledCum, false);
     powercord.api.settings.unregisterSettings(this.entityID);
-    FluxDispatcher.unsubscribe('USER_SETTINGS_PROTO_UPDATE');
-    FluxDispatcher.unsubscribe('USER_SETTINGS_PROTO_ENQUEUE_UPDATE');
   }
 };
