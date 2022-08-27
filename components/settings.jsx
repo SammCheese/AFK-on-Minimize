@@ -34,7 +34,7 @@ module.exports = class Settings extends React.PureComponent {
             Restore Status after opening Discord (Disabled)
           </SwitchItem>
           <SelectInput
-            value={getSetting('openingStatus', 'online')}
+            value={getSetting('openingStatus', 'online').value}
             onChange={(value) => updateSetting('openingStatus', value)}
             options={statusOptions.map(status => ({
               label: status.name,
@@ -51,7 +51,6 @@ module.exports = class Settings extends React.PureComponent {
               label: status.name,
               value: status.id
             }))}
-            
           >
             Status to be set when closing Discord
           </SelectInput>
